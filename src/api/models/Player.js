@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const shortid = require('shortid');
 
 class Player {
@@ -6,6 +7,12 @@ class Player {
     this.cards = [];
     this.name = name;
     this.state = 'waiting-for-players';
+  }
+
+  playCard(cardId) {
+    const card = _.find(this.cards, { id: cardId });
+    _.remove(this.cards, { id: cardId });
+    return card;
   }
 }
 

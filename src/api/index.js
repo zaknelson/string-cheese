@@ -25,6 +25,10 @@ app.get('/games/:gameId', async (req, res) => {
   res.send(GameService.getGame(req.params.gameId));
 });
 
+app.post('/games/:gameId/cards', async (req, res) => {
+  res.send(GameService.playCard(req.params.gameId, req.body.id));
+});
+
 app.get('/games/:gameId/players/:playerId', async (req, res) => {
   res.send(GameService.getPlayer(req.params.gameId, req.params.playerId));
 });

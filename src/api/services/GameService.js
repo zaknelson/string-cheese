@@ -39,6 +39,12 @@ class GameService {
     const game = this.getGame(gameId);
     return _.find(game.players, { id: playerId });
   }
+
+  playCard(gameId, cardId) {
+    const game = this.getGame(gameId);
+    const player = _.find(game.players, { cards: [{ id: cardId }] });
+    player.playCard(cardId);
+  }
 }
 
 module.exports = new GameService();
