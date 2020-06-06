@@ -1,14 +1,15 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import './App.css';
 import MainPage from './MainPage'
-import GamePage from './GamePage'
+import PickNamePage from './PickNamePage'
 
 const App = () => (
   <Router>
     <Switch>
       <Route exact path="/" component={MainPage} />
-      <Route exact path="/:gameid" component={GamePage} />
+      <Route exact path="/games/:gameid" component={PickNamePage} />
     </Switch>
   </Router>
 )

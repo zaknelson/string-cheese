@@ -1,0 +1,19 @@
+.PickNamePage {
+  display: 'flex';
+  text-align: center;
+}
+
+.pickNameContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.pickNameButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  padding-left: 10px;
+}
