@@ -6,9 +6,10 @@ const shortid = require('shortid');
 class Game {
   constructor() {
     this.id = shortid.generate();
+    this.cards = [];
+    this.deck = _.map(CARDS, (name) => new Card(name));
     this.players = [];
     this.state = 'waiting-for-players';
-    this.deck = _.map(CARDS, (name) => new Card(name));
   }
 
   drawCard() {
