@@ -4,6 +4,7 @@
   "description": "A game for picking favorites.",
   "main": "index.js",
   "scripts": {
+    "api": "node src/api/index.js",
     "test": ":"
   },
   "repository": {
