@@ -19,6 +19,7 @@
   "homepage": "https://github.com/zaknelson/string-cheese#readme",
   "dependencies": {
     "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.1.0",
     "express": "^4.17.1",
     "prettier": "^2.0.5"
   }
