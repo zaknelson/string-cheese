@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import Grid from './Grid'
+
 
 class App extends Component {
 state = {
@@ -27,6 +29,7 @@ state = {
     return (
       <div className="App">
         <p>{this.state.data}</p>
+        <Grid />
       </div>
     );
   }
