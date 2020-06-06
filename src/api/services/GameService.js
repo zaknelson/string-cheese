@@ -21,7 +21,7 @@ class GameService {
   }
 
   getPlayer(gameId, playerId) {
-    const game = getGame(gameId);
+    const game = this.getGame(gameId);
     return _.find(game.players, { id: playerId });
   }
 }
