@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/zaknelson/string-cheese#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "shortid": "^2.2.15"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
