@@ -18,7 +18,7 @@ app.get('/games', async (req, res) => {
 });
 
 app.post('/games', async (req, res) => {
-  res.send(GameService.createGame(req.body));
+  res.send(GameService.createGame());
 });
 
 app.get('/games/:gameId', async (req, res) => {
@@ -27,6 +27,10 @@ app.get('/games/:gameId', async (req, res) => {
 
 app.get('/games/:gameId/players/:playerId', async (req, res) => {
   res.send(GameService.getPlayer(req.params.gameId, req.params.playerId));
+});
+
+app.post('/games/:gameId/players', async (req, res) => {
+  res.send(GameService.createPlayer(req.params.gameId, req.body.name));
 });
 
 app.listen(port, () =>
