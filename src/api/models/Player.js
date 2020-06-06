@@ -9,9 +9,8 @@ class Player {
     this.state = 'waiting-for-players';
   }
 
-  playCard(cardId) {
-    const card = _.find(this.cards, { id: cardId });
-    _.remove(this.cards, { id: cardId });
+  playCard(card) {
+    _.remove(this.cards, card);
     return card;
   }
 }

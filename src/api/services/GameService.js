@@ -43,7 +43,9 @@ class GameService {
   playCard(gameId, cardId) {
     const game = this.getGame(gameId);
     const player = _.find(game.players, { cards: [{ id: cardId }] });
-    player.playCard(cardId);
+    const card = _.find(player.cards, { id: cardId });
+    player.playCard(card);
+    game.cards.push(card);
   }
 }
 
