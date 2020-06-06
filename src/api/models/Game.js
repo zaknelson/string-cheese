@@ -7,8 +7,10 @@ class Game {
   constructor() {
     this.id = shortid.generate();
     this.cards = [];
+    this.judgement = null;
     this.deck = _.map(CARDS, (name) => new Card(name));
     this.players = [];
+    this.round = 0;
     this.state = 'waiting-for-players';
   }
 

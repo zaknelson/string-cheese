@@ -2,15 +2,37 @@ const _ = require('lodash');
 const CONFIG = require('../data/config');
 const DemoGame = require('../demo/DemoGame');
 const Game = require('../models/Game');
+const Judgement = require('../models/Judgement');
 const Player = require('../models/Player');
 
 let games = [new DemoGame()];
 
 class GameService {
+  clearCards(gameId) {
+    const game = this.getGame(gameId);
+    game.round++;
+    game.cards = [];
+
+    // Re-up player cards
+    _.forEach(game.players, (player) => {
+      _.times(CONFIG.handSize - player.cards.length, () => {
+        const card = game.drawCard();
+        player.cards.push(card);
+      });
+    });
+    return game.cards;
+  }
+
   createGame() {
     const game = new Game();
     games.push(game);
     return game;
+  }
+
+  createJudgement(gameId, cards) {
+    const game = this.getGame(gameId);
+    game.judgement = new Judgement(cards);
+    return game.judgement;
   }
 
   createPlayer(gameId, name) {
@@ -27,8 +49,13 @@ class GameService {
     return player;
   }
 
-  getGame(id) {
-    return _.find(games, { id });
+  getCards(gameId) {
+    const game = this.getGame(gameId);
+    return game.cards;
+  }
+
+  getGame(gameId) {
+    return _.find(games, { id: gameId });
   }
 
   getGames() {
@@ -46,6 +73,13 @@ class GameService {
     const card = _.find(player.cards, { id: cardId });
     player.playCard(card);
     game.cards.push(card);
+    return game.cards;
+  }
+
+  revealJudgement(gameId, judgementId) {
+    const game = this.getGame(gameId);
+    game.judgement.revealed++;
+    return game.judgement;
   }
 }
 
