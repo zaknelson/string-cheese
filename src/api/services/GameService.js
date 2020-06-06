@@ -29,41 +29,9 @@ class GameService {
     return game;
   }
 
-  createJudgement(gameId, cards) {
-    const game = this.getGame(gameId);
-    const judgement = new Judgement(cards);
-    game.judgements.push(judgement);
-    return judgement;
-  }
-
-  createPlayer(gameId, name) {
-    const game = this.getGame(gameId);
-    const player = new Player(name);
-    game.players.push(player);
-
-    // Deal cards to new player
-    _.times(CONFIG.handSize, () => {
-      const card = game.drawCard();
-      player.cards.push(card);
-    });
-
-    return player;
-  }
-
   getCards(gameId) {
     const game = this.getGame(gameId);
     return game.cards;
-  }
-
-  getJudgements(gameId) {
-    const game = this.getGame(gameId);
-    return _.map(game.judgements, (judgement) => {
-      return {
-        id: judgement.id,
-        cards: judgement.cards.slice(0, judgement.revealed),
-        revealed: judgement.revealed,
-      };
-    });
   }
 
   getGame(gameId) {
@@ -74,11 +42,6 @@ class GameService {
     return games;
   }
 
-  getPlayer(gameId, playerId) {
-    const game = this.getGame(gameId);
-    return _.find(game.players, { id: playerId });
-  }
-
   playCard(gameId, cardId) {
     const game = this.getGame(gameId);
     const player = _.find(game.players, { cards: [{ id: cardId }] });
@@ -86,13 +49,6 @@ class GameService {
     player.playCard(card);
     game.cards.push(card);
     return game.cards;
-  }
-
-  revealJudgement(gameId, judgementId) {
-    const game = this.getGame(gameId);
-    const judgement = _.find(game.judgements, { id: judgementId });
-    judgement.revealed++;
-    return judgement;
   }
 }
 

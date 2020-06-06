@@ -1,4 +1,6 @@
 const GameService = require('./services/GameService');
+const JudgementService = require('./services/JudgementService');
+const PlayerService = require('./services/PlayerService');
 
 const express = require('express');
 
@@ -34,16 +36,16 @@ app.post('/games/:gameId/cards', async (req, res) => {
 });
 
 app.get('/games/:gameId/judgements', async (req, res) => {
-  res.send(GameService.getJudgements(req.params.gameId));
+  res.send(JudgementService.getJudgements(req.params.gameId));
 });
 
 app.post('/games/:gameId/judgements', async (req, res) => {
-  res.send(GameService.createJudgement(req.params.gameId, req.body.cards));
+  res.send(JudgementService.createJudgement(req.params.gameId, req.body.cards));
 });
 
 app.post('/games/:gameId/judgements/:judgementId/reveal', async (req, res) => {
   res.send(
-    GameService.revealJudgement(req.params.gameId, req.params.judgementId)
+    JudgementService.revealJudgement(req.params.gameId, req.params.judgementId)
   );
 });
 
@@ -52,11 +54,11 @@ app.delete('/games/:gameId/cards', async (req, res) => {
 });
 
 app.get('/games/:gameId/players/:playerId', async (req, res) => {
-  res.send(GameService.getPlayer(req.params.gameId, req.params.playerId));
+  res.send(PlayerService.getPlayer(req.params.gameId, req.params.playerId));
 });
 
 app.post('/games/:gameId/players', async (req, res) => {
-  res.send(GameService.createPlayer(req.params.gameId, req.body.name));
+  res.send(PlayerService.createPlayer(req.params.gameId, req.body.name));
 });
 
 app.listen(port, () =>
