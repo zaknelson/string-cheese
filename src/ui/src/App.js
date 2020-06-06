@@ -1,38 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
-import Grid from './Grid'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import MainPage from './MainPage'
 
-
-class App extends Component {
-state = {
-    data: null
-  };
-
-  componentDidMount() {
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.hello}))
-      .catch(err => console.log(err));
-  }
-
-  callBackendAPI = async () => {
-    const response = await fetch('/games');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message)
-    }
-
-    return body;
-  };
-
-  render() {
-    return (
-      <div className="App">
-        <p>{this.state.data}</p>
-        <Grid />
-      </div>
-    );
-  }
-}
+const App = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={MainPage} />
+    </Switch>
+  </Router>
+)
 
 export default App;
