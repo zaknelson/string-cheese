@@ -30,7 +30,7 @@ app.get('/games/:gameId/players/:playerId', async (req, res) => {
 });
 
 app.post('/games/:gameId/players', async (req, res) => {
-  res.send(GameService.createPlayer(req.params.gameId, req.params.playerId));
+  res.send(GameService.createPlayer(req.params.gameId, req.body.name));
 });
 
 app.listen(port, () =>
