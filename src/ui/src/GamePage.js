@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import './MainPage.css';
+import Grid from './Grid'
 
 
-class MainPage extends Component {
+class GamePage extends Component {
   state = {
     data: null
   };
 
+
   componentDidMount() {
-    this.callBackendAPI()
+    this.callBackendAPI(this.props.match.params.gameid)
       .then(res => this.setState({ data: res.hello}))
       .catch(err => console.log(err));
   }
 
-  callBackendAPI = async () => {
-    const response = await fetch('/games/123');
+  callBackendAPI = async (id) => {
+    const response = await fetch('/games/' + id);
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -26,10 +27,12 @@ class MainPage extends Component {
 
   render() {
     return (
-      <div className="MainPage">
+      <div className="GamePage">
+        <p>{this.state.data}</p>
+        <Grid />
       </div>
     );
   }
 }
 
-export default MainPage;
+export default GamePage;
