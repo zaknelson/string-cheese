@@ -16,7 +16,10 @@ class PlayerPage extends Component {
   }
 
   getCards = async (gameId, playerId) => {
-    const response = await fetch('/games/' + gameId + 'players/' + playerId);
+    gameId = 123; // TODO fix
+    playerId= 'abc'; // TODO fix
+    const response = await fetch('/games/' + gameId + '/players/' + playerId);
+    console.log(response)
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -27,6 +30,10 @@ class PlayerPage extends Component {
   };
 
   render() {
+    if (!this.state.cards) {
+      return null;
+    }
+
     return (
       <div className="PlayerPage">
         <CardGrid cards={this.state.cards}/>
