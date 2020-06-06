@@ -1,4 +1,7 @@
+import Button from '@material-ui/core/Button';
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
+
 import './MainPage.css';
 
 
@@ -7,26 +10,33 @@ class MainPage extends Component {
     data: null
   };
 
-  componentDidMount() {
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.hello}))
-      .catch(err => console.log(err));
-  }
+  componentDidMount() {}
 
-  callBackendAPI = async () => {
-    const response = await fetch('/games/123');
+  createNewGame = async () => {
+    const response = await fetch('/games', {
+      method: 'POST',
+    }); 
+
     const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message)
-    }
-
-    return body;
+    this.setState({
+      redirect: true,
+      id: body.id
+    })
   };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to={'/games/' + this.state.id} />
+    }
+  }
 
   render() {
     return (
       <div className="MainPage">
+        {this.renderRedirect()}
+        <Button variant="contained" color="primary" onClick={this.createNewGame}>
+          New Game
+        </Button>
       </div>
     );
   }
