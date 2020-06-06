@@ -31,8 +31,9 @@ class GameService {
 
   createJudgement(gameId, cards) {
     const game = this.getGame(gameId);
-    game.judgement = new Judgement(cards);
-    return game.judgement;
+    const judgement = new Judgement(cards);
+    game.judgements.push(judgement);
+    return judgement;
   }
 
   createPlayer(gameId, name) {
@@ -52,6 +53,17 @@ class GameService {
   getCards(gameId) {
     const game = this.getGame(gameId);
     return game.cards;
+  }
+
+  getJudgements(gameId) {
+    const game = this.getGame(gameId);
+    return _.map(game.judgements, (judgement) => {
+      return {
+        id: judgement.id,
+        cards: judgement.cards.slice(0, judgement.revealed),
+        revealed: judgement.revealed,
+      };
+    });
   }
 
   getGame(gameId) {
@@ -78,8 +90,9 @@ class GameService {
 
   revealJudgement(gameId, judgementId) {
     const game = this.getGame(gameId);
-    game.judgement.revealed++;
-    return game.judgement;
+    const judgement = _.find(game.judgements, { id: judgementId });
+    judgement.revealed++;
+    return judgement;
   }
 }
 

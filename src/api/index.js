@@ -33,6 +33,10 @@ app.post('/games/:gameId/cards', async (req, res) => {
   res.send(GameService.playCard(req.params.gameId, req.body.id));
 });
 
+app.get('/games/:gameId/judgements', async (req, res) => {
+  res.send(GameService.getJudgements(req.params.gameId));
+});
+
 app.post('/games/:gameId/judgements', async (req, res) => {
   res.send(GameService.createJudgement(req.params.gameId, req.body.cards));
 });
@@ -57,13 +61,4 @@ app.post('/games/:gameId/players', async (req, res) => {
 
 app.listen(port, () =>
   console.log(`String Cheese API listening at http://localhost:${port}`)
-);
-
-app.post(
-  '/',
-  // validators.userSignup,
-  async (req, res, next) => {
-    // Return a response to client.
-    return res.json({});
-  }
 );
