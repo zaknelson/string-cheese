@@ -1,10 +1,10 @@
 const shortid = require('shortid');
 
-class Game {
+class Player {
   constructor() {
     this.id = shortid.generate();
-    this.players = [];
+    this.cards = [];
   }
 }
 
-module.exports = Game;
+module.exports = Player;

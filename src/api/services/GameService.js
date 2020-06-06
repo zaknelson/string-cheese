@@ -1,13 +1,13 @@
-const _ = require('lodash');
-const shortid = require('shortid');
+const DemoGame = require('../demo/DemoGame');
 const Game = require('../models/Game');
 
-let games = [];
+const _ = require('lodash');
+
+let games = [new DemoGame()];
 
 class GameService {
   createGame(gameOptions) {
     const game = new Game(gameOptions);
-    game.id = shortid.generate();
     games.push(game);
     return game;
   }
@@ -18,6 +18,11 @@ class GameService {
 
   getGames() {
     return games;
+  }
+
+  getPlayer(gameId, playerId) {
+    const game = getGame(gameId);
+    return _.find(game.players, { id: playerId });
   }
 }
 

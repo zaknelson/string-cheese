@@ -1,6 +1,7 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const GameService = require('./services/GameService');
+
+const express = require('express');
+
 const app = express();
 const port = 3000;
 
@@ -16,12 +17,16 @@ app.get('/games', async (req, res) => {
   res.send(GameService.getGames());
 });
 
+app.post('/games', async (req, res) => {
+  res.send(GameService.createGame(req.body));
+});
+
 app.get('/games/:gameId', async (req, res) => {
   res.send(GameService.getGame(req.params.gameId));
 });
 
-app.post('/games', async (req, res) => {
-  res.send(GameService.createGame(req.body));
+app.get('/games/:gameId/players/:playerId', async (req, res) => {
+  res.send(GameService.getPlayer(req.params.gameId, req.params.playerId));
 });
 
 app.listen(port, () =>
