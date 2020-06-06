@@ -1,8 +1,9 @@
 const shortid = require('shortid');
 
 class Player {
-  constructor() {
+  constructor(name) {
     this.id = shortid.generate();
+    this.name = name;
     this.cards = [];
   }
 }
