@@ -1,4 +1,6 @@
 const GameService = require('./services/GameService');
+const JudgementService = require('./services/JudgementService');
+const PlayerService = require('./services/PlayerService');
 
 const express = require('express');
 
@@ -25,27 +27,40 @@ app.get('/games/:gameId', async (req, res) => {
   res.send(GameService.getGame(req.params.gameId));
 });
 
+app.get('/games/:gameId/cards', async (req, res) => {
+  res.send(GameService.getCards(req.params.gameId));
+});
+
 app.post('/games/:gameId/cards', async (req, res) => {
   res.send(GameService.playCard(req.params.gameId, req.body.id));
 });
 
+app.get('/games/:gameId/judgements', async (req, res) => {
+  res.send(JudgementService.getJudgements(req.params.gameId));
+});
+
+app.post('/games/:gameId/judgements', async (req, res) => {
+  res.send(JudgementService.createJudgement(req.params.gameId, req.body.cards));
+});
+
+app.post('/games/:gameId/judgements/:judgementId/reveal', async (req, res) => {
+  res.send(
+    JudgementService.revealJudgement(req.params.gameId, req.params.judgementId)
+  );
+});
+
+app.delete('/games/:gameId/cards', async (req, res) => {
+  res.send(GameService.clearCards(req.params.gameId));
+});
+
 app.get('/games/:gameId/players/:playerId', async (req, res) => {
-  res.send(GameService.getPlayer(req.params.gameId, req.params.playerId));
+  res.send(PlayerService.getPlayer(req.params.gameId, req.params.playerId));
 });
 
 app.post('/games/:gameId/players', async (req, res) => {
-  res.send(GameService.createPlayer(req.params.gameId, req.body.name));
+  res.send(PlayerService.createPlayer(req.params.gameId, req.body.name));
 });
 
 app.listen(port, () =>
   console.log(`String Cheese API listening at http://localhost:${port}`)
-);
-
-app.post(
-  '/',
-  // validators.userSignup,
-  async (req, res, next) => {
-    // Return a response to client.
-    return res.json({});
-  }
 );
