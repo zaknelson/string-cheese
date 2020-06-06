@@ -25,7 +25,7 @@ state = {
 
   render() {
     return (
-      <div>
+      <div className="App">
         <p>{this.state.data}</p>
       </div>
     );
