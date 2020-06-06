@@ -1,0 +1,15 @@
+module.exports = [
+  'Monopoly',
+  'Motels',
+  'Malls',
+  'Cruises',
+  'Podcasts',
+  'Avocado toast',
+  'Netflix',
+  'Houseplants',
+  'Rainbows',
+  'Waterfalls',
+  'Mechanical keyboards',
+  'Board games',
+  'Harry Potter',
+];
