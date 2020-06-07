@@ -36,11 +36,12 @@ class Scoreboard extends Component {
       return <div></div>;
     }
 
+    let getIconForPlayer = (player) =>
+      player.role === 'judge' ? <GradeIcon /> : null;
+
     let listItems = _.map(this.state.players, (player) => (
       <ListItem key={player.id}>
-        <ListItemIcon>
-          <GradeIcon />
-        </ListItemIcon>
+        <ListItemIcon>{getIconForPlayer(player)}</ListItemIcon>
         <ListItemText primary={player.name} />
         <ListItemText secondary={player.points} />
       </ListItem>
