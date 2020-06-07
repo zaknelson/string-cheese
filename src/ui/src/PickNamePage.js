@@ -16,6 +16,10 @@ class PickNamePage extends Component {
   pickName = async () => {
     const response = await fetch('/games/' + this.props.match.params.gameid + '/players', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name: this.state.name})
     }); 
 
     const body = await response.json();
@@ -24,6 +28,12 @@ class PickNamePage extends Component {
       id: body.id
     })
   };
+
+  setName = (e) => {
+    this.setState({
+      name: e.target.value,
+    })
+  }
 
   renderRedirect = () => {
     if (this.state.redirect) {
@@ -37,7 +47,7 @@ class PickNamePage extends Component {
         {this.renderRedirect()}
         <form noValidate autoComplete="off">
           <div className="pickNameContainer">
-            <TextField id="name" label="Name" variant="outlined" />
+            <TextField id="name" label="Name" variant="outlined" onChange={this.setName} />
             <div className="pickNameButton">
               <Button variant="contained" color="primary" onClick={this.pickName}>
                 Pick Name

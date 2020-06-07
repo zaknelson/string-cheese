@@ -19,7 +19,6 @@ class PlayerPage extends Component {
     gameId = 123; // TODO fix
     playerId= 'abc'; // TODO fix
     const response = await fetch('/games/' + gameId + '/players/' + playerId);
-    console.log(response)
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -36,7 +35,7 @@ class PlayerPage extends Component {
 
     return (
       <div className="PlayerPage">
-        <CardGrid cards={this.state.cards}/>
+        <CardGrid cards={this.state.cards} gameId={this.props.match.params.gameid}/>
       </div>
     );
   }
