@@ -1,10 +1,14 @@
 let id = 0;
 
 class Judgment {
-  constructor(submissions) {
+  constructor() {
     this.id = id++ + '';
-    this.submissions = submissions;
+    this.submissions = [];
     this.revealed = 0;
+  }
+
+  addSubmission(submission) {
+    this.submissions.push(submission);
   }
 }
 

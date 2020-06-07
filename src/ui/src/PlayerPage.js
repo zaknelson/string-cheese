@@ -11,6 +11,7 @@ class PlayerPage extends Component {
 
   componentDidMount() {
     this.getPlayer();
+    this.getJudgment();
   }
 
   getGameId() {
@@ -34,9 +35,41 @@ class PlayerPage extends Component {
     return player;
   };
 
+  getJudgment = async () => {
+    const response = await fetch(
+      '/games/' + this.getGameId() + '/judgments'
+    );
+    const judgments = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(judgments.message);
+    }
+
+    const judgment = judgments[judgments.length - 1];
+    this.setState({ judgment });
+    return judgment;
+  };
+
+
   onCardClick(card) {
     this.submitCard(card).then(this.getPlayer);
   }
+
+  renderJudgment() {
+    console.log(this.state.player)
+    console.log(this.state.judgment)
+    if (this.state.player.role !== "judge" ||
+        !this.state.judgment) {
+      return null;
+    }
+
+    let cards = this.state.judgment.submissions.map(a => a.card);
+    return <CardGrid
+      cards={cards}
+      gameId={this.getGameId()}
+      onCardClick={this.onCardClick.bind(this)}
+    />
+  } 
 
   submitCard = async (card) => {
     const response = await fetch(
@@ -63,6 +96,7 @@ class PlayerPage extends Component {
 
     return (
       <div className="PlayerPage page">
+        {this.renderJudgment()}
         <Scoreboard gameId={this.getGameId()}></Scoreboard>
         <CardGrid
           cards={this.state.player.cards}
