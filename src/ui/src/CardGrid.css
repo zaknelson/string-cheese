@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-grow: 1;
+}
+
+.paper {
+  height: 290px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 70px;
+  font-weight: bold;
+}
