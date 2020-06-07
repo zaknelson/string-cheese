@@ -4,14 +4,14 @@
   "description": "A game for picking favorites.",
   "main": "index.js",
   "scripts": {
-    "api": "node src/api/index.js",
-    "test": "eslint ."
+    "start:api": "cd src/api && npm run start",
+    "start:ui": "cd src/ui && npm run start",
+    "test": "cd src/api && npm run test && cd ../ui && npm run test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zaknelson/string-cheese.git"
   },
-  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zaknelson/string-cheese/issues"
