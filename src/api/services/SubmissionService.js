@@ -9,13 +9,18 @@ class SubmissionService {
     game.round++;
     game.submissions = [];
 
-    // Re-up player cards
+    // Re-up player cards, and reset roles
     _.forEach(game.players, (player) => {
+      player.setGuesser();
       _.times(CONFIG.handSize - player.cards.length, () => {
         const card = game.drawCard();
         player.cards.push(card);
       });
     });
+
+    // Set the new judge
+    game.players[game.round % game.players.length].setJudge();
+
     return game.submissions;
   }
 

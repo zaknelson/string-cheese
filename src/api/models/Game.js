@@ -11,7 +11,6 @@ class Game {
     this.deck = _.map(CARDS, (name) => new Card(name));
     this.players = [];
     this.round = 0;
-    this.state = 'waiting-for-players';
   }
 
   drawCard() {

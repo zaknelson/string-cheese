@@ -6,6 +6,7 @@ class DemoPlayer1 extends Player {
     super();
     this.id = 'abc';
     this.name = 'Zak';
+    this.role = 'judge';
     this.points = 100;
     this.cards.push(new Card('Mountains'));
     this.cards.push(new Card('TV'));

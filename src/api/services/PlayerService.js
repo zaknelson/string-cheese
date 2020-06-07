@@ -6,7 +6,8 @@ const Player = require('../models/Player');
 class PlayerService {
   createPlayer(gameId, name) {
     const game = GameService.getGame(gameId);
-    const player = new Player(name);
+    const isJudge = game.players.length === 0;
+    const player = new Player(name, isJudge);
     game.players.push(player);
 
     // Deal cards to new player
