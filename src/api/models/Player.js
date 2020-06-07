@@ -6,6 +6,7 @@ class Player {
     this.id = shortid.generate();
     this.cards = [];
     this.name = name;
+    this.points = 0;
     this.state = 'waiting-for-players';
   }
 
