@@ -42,7 +42,7 @@ class PlayerPage extends Component {
     }
 
     return (
-      <div className="PlayerPage">
+      <div className="PlayerPage page">
         <Scoreboard gameId={this.getGameId()}></Scoreboard>
         <CardGrid cards={this.state.cards} gameId={this.getGameId()} />
       </div>
