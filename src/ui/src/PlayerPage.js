@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
-import './PlayerPage.css';
+import _ from 'lodash';
+import Button from '@material-ui/core/Button';
 import CardGrid from './CardGrid';
 import Scoreboard from './Scoreboard';
+
+import './PlayerPage.css';
 
 class PlayerPage extends Component {
   state = {
@@ -117,17 +120,41 @@ class PlayerPage extends Component {
   }
 
   renderSubmissions() {
-    if (!this.state.submissions || this.state.submissions.length < this.state.players.length - 1) {
+    if (
+      !this.state.submissions ||
+      this.state.submissions.length < this.state.players.length - 1
+    ) {
       return null;
     }
 
+    const onCardOrderChange = (cards) => {
+      const submissions = _.sortBy(this.state.submissions, (submission) => {
+        return _.findIndex(cards, ['id', submission.card.id]);
+      });
+      this.setState({
+        submissions,
+      });
+    };
+
+    const onChooseClick = () => {
+      this.submitJudgment({
+        submissions: this.state.submissions,
+      });
+    };
+
     let cards = this.state.submissions.map((a) => a.card);
     return (
-      <CardGrid
-        cards={cards}
-        gameId={this.getGameId()}
-        onCardClick={this.onCardClick.bind(this)}
-      />
+      <div>
+        <CardGrid
+          cards={cards}
+          gameId={this.getGameId()}
+          disabled={true}
+          onCardOrderChange={onCardOrderChange.bind(this)}
+        />
+        <Button variant="contained" color="primary" onClick={onChooseClick}>
+          Choose
+        </Button>
+      </div>
     );
   }
 
@@ -147,6 +174,21 @@ class PlayerPage extends Component {
       throw Error(responseCard.message);
     }
     return responseCard;
+  };
+
+  submitJudgment = async (judgment) => {
+    const response = await fetch('/games/' + this.getGameId() + '/judgments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ judgment }),
+    });
+    const responseJudgment = await response.json();
+    if (response.status !== 200) {
+      throw Error(responseJudgment.message);
+    }
+    return responseJudgment;
   };
 
   render() {
