@@ -16,9 +16,18 @@ class Scoreboard extends Component {
   };
 
   componentDidMount() {
-    this.getPlayers().then((players) => {
-      this.setState({ players });
-    });
+    // TODO remove polling
+    const getAndSetPlayers = () => {
+      this.getPlayers().then((players) => {
+        this.setState({ players });
+      });
+    };
+    this.intervalId = setInterval(getAndSetPlayers, 500);
+    getAndSetPlayers();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   getPlayers = async () => {
