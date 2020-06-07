@@ -9,6 +9,10 @@ class PlayerPage extends Component {
     player: null,
   };
 
+  canSubmitCards() {
+    return this.state.player.role === 'judge' || this.state.player.isWaiting;
+  }
+
   componentDidMount() {
     this.getPlayer();
     this.getJudgment();
@@ -99,6 +103,7 @@ class PlayerPage extends Component {
         <CardGrid
           cards={this.state.player.cards}
           gameId={this.getGameId()}
+          disabled={this.canSubmitCards()}
           onCardClick={this.onCardClick.bind(this)}
         />
       </div>

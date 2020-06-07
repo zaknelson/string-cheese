@@ -18,12 +18,11 @@ class CardGrid extends Component {
         <Grid item xs={12}>
           <Grid container justify="center" spacing={2}>
             {_.range(this.props.cards.length).map((i) => (
-              <Grid
-                key={this.props.cards[i].id}
-                item
-                onClick={this.onClick.bind(this, this.props.cards[i])}
-              >
-                <ButtonBase>
+              <Grid key={this.props.cards[i].id} item>
+                <ButtonBase
+                  disabled={this.props.disabled}
+                  onClick={this.onClick.bind(this, this.props.cards[i])}
+                >
                   <Paper className="paper">
                     <Typography
                       variant="h6"
