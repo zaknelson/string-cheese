@@ -46,9 +46,9 @@ app.post('/games/:gameId/judgments', async (req, res) => {
   );
 });
 
-app.post('/games/:gameId/judgments/:judgmentId/reveal', async (req, res) => {
+app.put('/games/:gameId/judgments/:judgmentId', async (req, res) => {
   res.send(
-    JudgmentService.revealJudgment(req.params.gameId, req.params.judgmentId)
+    JudgmentService.updateJudgment(req.params.gameId, req.params.judgmentId)
   );
 });
 

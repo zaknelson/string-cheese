@@ -26,7 +26,7 @@ class JudgmentService {
     });
   }
 
-  revealJudgment(gameId, judgmentId) {
+  updateJudgment(gameId, judgmentId) {
     const game = GameService.getGame(gameId);
     const judgment = _.find(game.judgments, { id: judgmentId });
     const player = judgment.submissions[judgment.revealed].player;
