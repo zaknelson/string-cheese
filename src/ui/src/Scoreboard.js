@@ -20,10 +20,8 @@ class Scoreboard extends Component {
     });
   }
 
-  getPlayers = async (gameId, playerId) => {
-    gameId = 123; // TODO fix
-    playerId = 'abc'; // TODO fix
-    const response = await fetch('/games/' + gameId + '/players');
+  getPlayers = async () => {
+    const response = await fetch('/games/' + this.props.gameId + '/players');
     const body = await response.json();
 
     if (response.status !== 200) {

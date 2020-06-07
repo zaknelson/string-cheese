@@ -1,28 +1,36 @@
 import React, { Component } from 'react';
 
 import './PlayerPage.css';
-import CardGrid from './CardGrid'
-
+import CardGrid from './CardGrid';
+import Scoreboard from './Scoreboard';
 
 class PlayerPage extends Component {
   state = {
-    data: null
+    data: null,
   };
 
   componentDidMount() {
-    this.getCards(this.props.match.params.gameid, this.props.match.params.playerid)
-      .then(res => this.setState({ cards: res.cards}))
-      .catch(err => console.log(err));
+    this.getCards()
+      .then((res) => this.setState({ cards: res.cards }))
+      .catch((err) => console.log(err));
+  }
+
+  getGameId() {
+    return this.props.match.params.gameid;
+  }
+
+  getPlayerId() {
+    return this.props.match.params.playerid;
   }
 
   getCards = async (gameId, playerId) => {
-    gameId = 123; // TODO fix
-    playerId= 'abc'; // TODO fix
-    const response = await fetch('/games/' + gameId + '/players/' + playerId);
+    const response = await fetch(
+      '/games/' + this.getGameId() + '/players/' + this.getPlayerId()
+    );
     const body = await response.json();
 
     if (response.status !== 200) {
-      throw Error(body.message)
+      throw Error(body.message);
     }
 
     return body;
@@ -35,7 +43,8 @@ class PlayerPage extends Component {
 
     return (
       <div className="PlayerPage">
-        <CardGrid cards={this.state.cards} gameId={this.props.match.params.gameid}/>
+        <Scoreboard gameId={this.getGameId()}></Scoreboard>
+        <CardGrid cards={this.state.cards} gameId={this.getGameId()} />
       </div>
     );
   }
