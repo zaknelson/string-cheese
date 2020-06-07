@@ -198,12 +198,12 @@ class PlayerPage extends Component {
 
     return (
       <div className="PlayerPage page">
-        {this.renderJudgment()}
-        {this.renderSubmissions()}
         <Scoreboard
           gameId={this.getGameId()}
           players={this.state.players}
         ></Scoreboard>
+        {this.renderJudgment()}
+        {this.renderSubmissions()}
         <CardGrid
           cards={this.state.player.cards}
           gameId={this.getGameId()}
