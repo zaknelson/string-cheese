@@ -7,6 +7,7 @@ class DemoPlayer1 extends Player {
     this.id = 'abc';
     this.name = 'Zak';
     this.role = 'judge';
+    this.isWaiting = true;
     this.points = 100;
     this.cards.push(new Card('Mountains'));
     this.cards.push(new Card('TV'));

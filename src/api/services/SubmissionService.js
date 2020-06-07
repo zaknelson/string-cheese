@@ -11,7 +11,8 @@ class SubmissionService {
 
     // Re-up player cards, and reset roles
     _.forEach(game.players, (player) => {
-      player.setGuesser();
+      player.role = 'guesser';
+      player.isWaiting = false;
       _.times(CONFIG.handSize - player.cards.length, () => {
         const card = game.drawCard();
         player.cards.push(card);
@@ -19,7 +20,9 @@ class SubmissionService {
     });
 
     // Set the new judge
-    game.players[game.round % game.players.length].setJudge();
+    const newJudge = game.players[game.round % game.players.length];
+    newJudge.role = 'judge';
+    newJudge.isWaiting = true;
 
     return game.submissions;
   }
@@ -34,8 +37,15 @@ class SubmissionService {
     const player = _.find(game.players, { cards: [{ id: cardId }] });
     const card = _.find(player.cards, { id: cardId });
     const submission = new Submission(player, card);
+    player.isWaiting = true;
     player.playCard(card);
     game.submissions.push(submission);
+
+    // If this is the last submission, the judge isn't waiting anymore
+    if (game.submissions.length === game.player.length - 1) {
+      _.find(game.players, { role: 'judge' }).isWaiting = false;
+    }
+
     return submission;
   }
 }
