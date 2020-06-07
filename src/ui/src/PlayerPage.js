@@ -36,9 +36,7 @@ class PlayerPage extends Component {
   };
 
   getJudgment = async () => {
-    const response = await fetch(
-      '/games/' + this.getGameId() + '/judgments'
-    );
+    const response = await fetch('/games/' + this.getGameId() + '/judgments');
     const judgments = await response.json();
 
     if (response.status !== 200) {
@@ -50,26 +48,26 @@ class PlayerPage extends Component {
     return judgment;
   };
 
-
   onCardClick(card) {
     this.submitCard(card).then(this.getPlayer);
   }
 
   renderJudgment() {
-    console.log(this.state.player)
-    console.log(this.state.judgment)
-    if (this.state.player.role !== "judge" ||
-        !this.state.judgment) {
+    console.log(this.state.player);
+    console.log(this.state.judgment);
+    if (this.state.player.role !== 'judge' || !this.state.judgment) {
       return null;
     }
 
-    let cards = this.state.judgment.submissions.map(a => a.card);
-    return <CardGrid
-      cards={cards}
-      gameId={this.getGameId()}
-      onCardClick={this.onCardClick.bind(this)}
-    />
-  } 
+    let cards = this.state.judgment.submissions.map((a) => a.card);
+    return (
+      <CardGrid
+        cards={cards}
+        gameId={this.getGameId()}
+        onCardClick={this.onCardClick.bind(this)}
+      />
+    );
+  }
 
   submitCard = async (card) => {
     const response = await fetch(
