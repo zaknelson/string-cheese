@@ -1,3 +1,7 @@
-.App {
-  text-align: center;
+.app {
+  padding: 10px;
+}
+
+.Scoreboard {
+  margin-left: auto;
 }
