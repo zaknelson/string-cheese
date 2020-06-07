@@ -76,6 +76,10 @@ app.get('/games/:gameId/submissions', async (req, res) => {
   res.send(SubmissionService.getSubmissions(req.params.gameId));
 });
 
+app.delete('/games/:gameId/submissions', async (req, res) => {
+  res.send(SubmissionService.deleteSubmissions(req.params.gameId));
+});
+
 app.post('/games/:gameId/submissions', async (req, res) => {
   res.send(
     SubmissionService.createSubmission(req.params.gameId, req.body.card.id)
