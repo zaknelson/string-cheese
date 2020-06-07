@@ -1,5 +1,5 @@
 const GameService = require('./services/GameService');
-const JudgementService = require('./services/JudgementService');
+const JudgmentService = require('./services/JudgmentService');
 const PlayerService = require('./services/PlayerService');
 const SubmissionService = require('./services/SubmissionService');
 
@@ -33,22 +33,22 @@ app.get('/games/:gameId', async (req, res) => {
 });
 
 //
-// judgements
+// judgments
 //
 
-app.get('/games/:gameId/judgements', async (req, res) => {
-  res.send(JudgementService.getJudgements(req.params.gameId));
+app.get('/games/:gameId/judgments', async (req, res) => {
+  res.send(JudgmentService.getJudgments(req.params.gameId));
 });
 
-app.post('/games/:gameId/judgements', async (req, res) => {
+app.post('/games/:gameId/judgments', async (req, res) => {
   res.send(
-    JudgementService.createJudgement(req.params.gameId, req.body.submissions)
+    JudgmentService.createJudgment(req.params.gameId, req.body.submissions)
   );
 });
 
-app.post('/games/:gameId/judgements/:judgementId/reveal', async (req, res) => {
+app.post('/games/:gameId/judgments/:judgmentId/reveal', async (req, res) => {
   res.send(
-    JudgementService.revealJudgement(req.params.gameId, req.params.judgementId)
+    JudgmentService.revealJudgment(req.params.gameId, req.params.judgmentId)
   );
 });
 

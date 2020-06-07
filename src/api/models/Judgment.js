@@ -1,6 +1,6 @@
 let id = 0;
 
-class Judgement {
+class Judgment {
   constructor(submissions) {
     this.id = id++ + '';
     this.submissions = submissions;
@@ -8,4 +8,4 @@ class Judgement {
   }
 }
 
-module.exports = Judgement;
+module.exports = Judgment;

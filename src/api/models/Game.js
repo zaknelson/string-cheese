@@ -7,7 +7,7 @@ class Game {
   constructor() {
     this.id = shortid.generate();
     this.submissions = [];
-    this.judgements = [];
+    this.judgments = [];
     this.deck = _.map(CARDS, (name) => new Card(name));
     this.players = [];
     this.round = 0;
