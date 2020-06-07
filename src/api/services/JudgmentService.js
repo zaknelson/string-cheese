@@ -6,10 +6,9 @@ const Judgment = require('../models/Judgment');
 class JudgmentService {
   createJudgment(gameId, submissions) {
     const game = GameService.getGame(gameId);
-    const judgment = new Judgment(
-      _.map(submissions, (submission) =>
-        _.find(game.submissions, { id: submission.id })
-      )
+    const judgment = new Judgment();
+    _.map(submissions, (submission) =>
+      judgment.addSubmission(_.find(game.submissions, { id: submission.id }))
     );
     game.judgments.push(judgment);
     return judgment;
