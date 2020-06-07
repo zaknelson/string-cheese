@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -18,15 +19,21 @@ class CardGrid extends Component {
           <Grid container justify="center" spacing={2}>
             {_.range(this.props.cards.length).map((i) => (
               <Grid
-                key={i}
+                key={this.props.cards[i].id}
                 item
                 onClick={this.onClick.bind(this, this.props.cards[i])}
               >
-                <Paper className="paper">
-                  <Typography variant="h6" component="h6" className="textArea">
-                    {this.props.cards[i].name}
-                  </Typography>
-                </Paper>
+                <ButtonBase>
+                  <Paper className="paper">
+                    <Typography
+                      variant="h6"
+                      component="h6"
+                      className="textArea"
+                    >
+                      {this.props.cards[i].name}
+                    </Typography>
+                  </Paper>
+                </ButtonBase>
               </Grid>
             ))}
           </Grid>
