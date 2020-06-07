@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import Card from '@material-ui/core/Card';
+import DoneIcon from '@material-ui/icons/Done';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import GradeIcon from '@material-ui/icons/Grade';
-import Card from '@material-ui/core/Card';
+import GavelIcon from '@material-ui/icons/Gavel';
 
 import './Scoreboard.css';
 
@@ -36,8 +37,13 @@ class Scoreboard extends Component {
       return <div></div>;
     }
 
-    let getIconForPlayer = (player) =>
-      player.role === 'judge' ? <GradeIcon /> : null;
+    let getIconForPlayer = (player) => {
+      if (player.role === 'judge') {
+        return <GavelIcon />;
+      } else {
+        return player.isWaiting ? <DoneIcon /> : null;
+      }
+    };
 
     let listItems = _.map(this.state.players, (player) => (
       <ListItem key={player.id}>

@@ -42,7 +42,7 @@ class SubmissionService {
     game.submissions.push(submission);
 
     // If this is the last submission, the judge isn't waiting anymore
-    if (game.submissions.length === game.player.length - 1) {
+    if (game.submissions.length === game.players.length - 1) {
       _.find(game.players, { role: 'judge' }).isWaiting = false;
     }
 
