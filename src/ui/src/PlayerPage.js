@@ -117,7 +117,7 @@ class PlayerPage extends Component {
   }
 
   renderSubmissions() {
-    if (!this.state.submissions) {
+    if (!this.state.submissions || this.state.submissions.length < this.state.players.length - 1) {
       return null;
     }
 
