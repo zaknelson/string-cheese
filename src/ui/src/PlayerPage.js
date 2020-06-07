@@ -6,13 +6,11 @@ import Scoreboard from './Scoreboard';
 
 class PlayerPage extends Component {
   state = {
-    data: null,
+    player: null,
   };
 
   componentDidMount() {
-    this.getCards()
-      .then((res) => this.setState({ cards: res.cards }))
-      .catch((err) => console.log(err));
+    this.getPlayer();
   }
 
   getGameId() {
@@ -23,28 +21,54 @@ class PlayerPage extends Component {
     return this.props.match.params.playerid;
   }
 
-  getCards = async (gameId, playerId) => {
+  getPlayer = async () => {
     const response = await fetch(
       '/games/' + this.getGameId() + '/players/' + this.getPlayerId()
     );
-    const body = await response.json();
+    const player = await response.json();
 
     if (response.status !== 200) {
-      throw Error(body.message);
+      throw Error(player.message);
     }
+    this.setState({ player });
+    return player;
+  };
 
-    return body;
+  onCardClick(card) {
+    this.submitCard(card).then(this.getPlayer);
+  }
+
+  submitCard = async (card) => {
+    const response = await fetch(
+      '/games/' + this.getGameId() + '/submissions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ card }),
+      }
+    );
+    const responseCard = await response.json();
+    if (response.status !== 200) {
+      throw Error(responseCard.message);
+    }
+    return responseCard;
   };
 
   render() {
-    if (!this.state.cards) {
+    if (!this.state.player) {
       return null;
     }
 
     return (
       <div className="PlayerPage page">
         <Scoreboard gameId={this.getGameId()}></Scoreboard>
-        <CardGrid cards={this.state.cards} gameId={this.getGameId()} />
+        <CardGrid
+          cards={this.state.player.cards}
+          gameId={this.getGameId()}
+          onCardClick={this.onCardClick.bind(this)}
+        />
       </div>
     );
   }

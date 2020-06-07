@@ -33,7 +33,7 @@ class Scoreboard extends Component {
 
   render() {
     if (!this.state.players) {
-      return null;
+      return <div></div>;
     }
 
     let listItems = _.map(this.state.players, (player) => (
