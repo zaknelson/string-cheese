@@ -8,19 +8,12 @@ class Player {
     this.name = name;
     this.points = 0;
     this.role = isJudge ? 'judge' : 'guesser';
+    this.isWaiting = isJudge;
   }
 
   playCard(card) {
     _.remove(this.cards, card);
     return card;
-  }
-
-  setGuesser() {
-    this.role = 'guesser';
-  }
-
-  setJudge() {
-    this.role = 'judge';
   }
 }
 
