@@ -14,8 +14,30 @@ class PlayerPage extends Component {
   }
 
   componentDidMount() {
+    // TODO remove polling
+    const getStatus = () => {
+      this.getPlayers();
+      if (this.state.player && this.state.players) {
+        if (this.state.player.role === 'judge') {
+          if (
+            !this.state.submissions ||
+            this.state.submissions.length < this.state.players.length - 1
+          ) {
+            this.getSubmissions();
+          }
+        } else {
+          this.getJudgment();
+        }
+      }
+    };
+
     this.getPlayer();
-    this.getJudgment();
+    this.intervalId = setInterval(getStatus, 2000);
+    getStatus();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
   getGameId() {
@@ -39,6 +61,17 @@ class PlayerPage extends Component {
     return player;
   };
 
+  getPlayers = async () => {
+    const response = await fetch('/games/' + this.getGameId() + '/players');
+    const players = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(players.message);
+    }
+    this.setState({ players });
+    return players;
+  };
+
   getJudgment = async () => {
     const response = await fetch('/games/' + this.getGameId() + '/judgments');
     const judgments = await response.json();
@@ -52,18 +85,43 @@ class PlayerPage extends Component {
     return judgment;
   };
 
+  getSubmissions = async () => {
+    const response = await fetch('/games/' + this.getGameId() + '/submissions');
+    const submissions = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(submissions.message);
+    }
+
+    this.setState({ submissions });
+    return submissions;
+  };
+
   onCardClick(card) {
     this.submitCard(card).then(this.getPlayer);
   }
 
   renderJudgment() {
-    console.log(this.state.player);
-    console.log(this.state.judgment);
-    if (this.state.player.role !== 'judge' || !this.state.judgment) {
+    if (!this.state.judgment) {
       return null;
     }
 
     let cards = this.state.judgment.submissions.map((a) => a.card);
+    return (
+      <CardGrid
+        cards={cards}
+        gameId={this.getGameId()}
+        onCardClick={this.onCardClick.bind(this)}
+      />
+    );
+  }
+
+  renderSubmissions() {
+    if (!this.state.submissions) {
+      return null;
+    }
+
+    let cards = this.state.submissions.map((a) => a.card);
     return (
       <CardGrid
         cards={cards}
@@ -99,7 +157,11 @@ class PlayerPage extends Component {
     return (
       <div className="PlayerPage page">
         {this.renderJudgment()}
-        <Scoreboard gameId={this.getGameId()}></Scoreboard>
+        {this.renderSubmissions()}
+        <Scoreboard
+          gameId={this.getGameId()}
+          players={this.state.players}
+        ></Scoreboard>
         <CardGrid
           cards={this.state.player.cards}
           gameId={this.getGameId()}

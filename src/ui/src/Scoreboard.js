@@ -15,34 +15,8 @@ class Scoreboard extends Component {
     players: null,
   };
 
-  componentDidMount() {
-    // TODO remove polling
-    const getAndSetPlayers = () => {
-      this.getPlayers().then((players) => {
-        this.setState({ players });
-      });
-    };
-    this.intervalId = setInterval(getAndSetPlayers, 500);
-    getAndSetPlayers();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
-  getPlayers = async () => {
-    const response = await fetch('/games/' + this.props.gameId + '/players');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message);
-    }
-
-    return body;
-  };
-
   render() {
-    if (!this.state.players) {
+    if (!this.props.players) {
       return <div></div>;
     }
 
@@ -54,7 +28,7 @@ class Scoreboard extends Component {
       }
     };
 
-    let listItems = _.map(this.state.players, (player) => (
+    let listItems = _.map(this.props.players, (player) => (
       <ListItem key={player.id}>
         <ListItemIcon>{getIconForPlayer(player)}</ListItemIcon>
         <ListItemText primary={player.name} />
