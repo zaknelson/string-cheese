@@ -3,9 +3,9 @@ const GameService = require('./GameService');
 const Judgement = require('../models/Judgement');
 
 class JudgementService {
-  createJudgement(gameId, cards) {
+  createJudgement(gameId, submissions) {
     const game = GameService.getGame(gameId);
-    const judgement = new Judgement(cards);
+    const judgement = new Judgement(submissions);
     game.judgements.push(judgement);
     return judgement;
   }
@@ -15,7 +15,7 @@ class JudgementService {
     return _.map(game.judgements, (judgement) => {
       return {
         id: judgement.id,
-        cards: judgement.cards.slice(0, judgement.revealed),
+        submissions: judgement.submissions.slice(0, judgement.revealed),
         revealed: judgement.revealed,
       };
     });

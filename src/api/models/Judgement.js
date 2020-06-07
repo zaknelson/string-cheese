@@ -1,9 +1,9 @@
 let id = 0;
 
 class Judgement {
-  constructor(cards) {
+  constructor(submissions) {
     this.id = id++ + '';
-    this.cards = cards;
+    this.submissions = submissions;
     this.revealed = 0;
   }
 }

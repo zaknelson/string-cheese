@@ -2,8 +2,6 @@ const _ = require('lodash');
 const CONFIG = require('../data/config');
 const DemoGame = require('../demo/DemoGame');
 const Game = require('../models/Game');
-const Judgement = require('../models/Judgement');
-const Player = require('../models/Player');
 
 let games = [new DemoGame()];
 
@@ -29,26 +27,12 @@ class GameService {
     return game;
   }
 
-  getCards(gameId) {
-    const game = this.getGame(gameId);
-    return game.cards;
-  }
-
   getGame(gameId) {
     return _.find(games, { id: gameId });
   }
 
   getGames() {
     return games;
-  }
-
-  playCard(gameId, cardId) {
-    const game = this.getGame(gameId);
-    const player = _.find(game.players, { cards: [{ id: cardId }] });
-    const card = _.find(player.cards, { id: cardId });
-    player.playCard(card);
-    game.cards.push(card);
-    return game.cards;
   }
 }
 

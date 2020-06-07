@@ -22,6 +22,11 @@ class PlayerService {
     const game = GameService.getGame(gameId);
     return _.find(game.players, { id: playerId });
   }
+
+  getPlayers(gameId, playerId) {
+    const game = GameService.getGame(gameId);
+    return game.players;
+  }
 }
 
 module.exports = new PlayerService();
