@@ -12,4 +12,12 @@ module.exports = [
   'Mechanical keyboards',
   'Board games',
   'Harry Potter',
+  'Summer',
+  'Cupcakes',
+  'Spiders',
+  'Europe',
+  'New socks',
+  'Pancakes',
+  'Haircuts',
+  'Corgis',
 ];

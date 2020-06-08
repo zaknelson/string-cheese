@@ -27,8 +27,10 @@ class PlayerPage extends Component {
             this.state.submissions.length < this.state.players.length - 1
           ) {
             this.getSubmissions();
+          } else {
+            this.getJudgment();
           }
-        } else {
+        } else if (this.state.player.isWaiting) {
           this.getJudgment();
         }
       }
@@ -109,20 +111,50 @@ class PlayerPage extends Component {
       return null;
     }
 
+    const onRevealClick = () => {
+      this.revealJudgment(this.state.judgment);
+    };
+
+    const onDoneClick = () => {
+      this.clearSubmissions().then(this.getPlayer);
+    };
+
+    let revealButton = () => {
+      if (this.state.player.role !== 'judge') {
+        return null;
+      }
+      const doneRevealing =
+        this.state.judgment.revealed === this.state.players.length - 1;
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={doneRevealing ? onDoneClick : onRevealClick}
+        >
+          {doneRevealing ? 'Done' : 'Reveal'}
+        </Button>
+      );
+    };
+
     let cards = this.state.judgment.submissions.map((a) => a.card);
     return (
-      <CardGrid
-        cards={cards}
-        gameId={this.getGameId()}
-        onCardClick={this.onCardClick.bind(this)}
-      />
+      <div>
+        <CardGrid
+          cards={cards}
+          gameId={this.getGameId()}
+          onCardClick={this.onCardClick.bind(this)}
+        />
+        {revealButton()}
+      </div>
     );
   }
 
   renderSubmissions() {
     if (
+      this.state.judgment ||
       !this.state.submissions ||
-      this.state.submissions.length < this.state.players.length - 1
+      this.state.submissions.length < this.state.players.length - 1 ||
+      this.state.submissions.length === 0
     ) {
       return null;
     }
@@ -139,7 +171,7 @@ class PlayerPage extends Component {
     const onChooseClick = () => {
       this.submitJudgment({
         submissions: this.state.submissions,
-      });
+      }).then(this.getJudgment);
     };
 
     let cards = this.state.submissions.map((a) => a.card);
@@ -157,6 +189,23 @@ class PlayerPage extends Component {
       </div>
     );
   }
+
+  clearSubmissions = async () => {
+    const response = await fetch(
+      '/games/' + this.getGameId() + '/submissions',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const submissions = await response.json();
+    if (response.status !== 200) {
+      throw Error(submissions.message);
+    }
+    return submissions;
+  };
 
   submitCard = async (card) => {
     const response = await fetch(
@@ -182,8 +231,25 @@ class PlayerPage extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ judgment }),
+      body: JSON.stringify(judgment),
     });
+    const responseJudgment = await response.json();
+    if (response.status !== 200) {
+      throw Error(responseJudgment.message);
+    }
+    return responseJudgment;
+  };
+
+  revealJudgment = async (judgment) => {
+    const response = await fetch(
+      '/games/' + this.getGameId() + '/judgments/' + judgment.id,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     const responseJudgment = await response.json();
     if (response.status !== 200) {
       throw Error(responseJudgment.message);
