@@ -10,33 +10,40 @@ import './PlayerPage.css';
 class PlayerPage extends Component {
   state = {
     player: null,
+    players: null,
+    judgment: null,
+    submissions: null,
   };
-
-  canSubmitCards() {
-    return this.state.player.role === 'judge' || this.state.player.isWaiting;
-  }
 
   componentDidMount() {
     // TODO remove polling
     const getStatus = () => {
       this.getPlayers();
       if (this.state.player && this.state.players) {
-        if (this.state.player.role === 'judge') {
-          if (
-            !this.state.submissions ||
-            this.state.submissions.length < this.state.players.length - 1
-          ) {
-            this.getSubmissions();
-          } else {
-            this.getJudgment();
-          }
-        } else if (this.state.player.isWaiting) {
+        if (
+          this.state.player.state === 'waiting-for-guesses' ||
+          this.state.player.state === 'judging'
+        ) {
+          this.getSubmissions();
+        } else {
+          this.setState({
+            submissions: null,
+          });
+        }
+
+        if (
+          this.state.player.state === 'revealing' ||
+          this.state.player.state === 'waiting-for-reveals'
+        ) {
           this.getJudgment();
+        } else {
+          this.setState({
+            judgment: null,
+          });
         }
       }
     };
 
-    this.getPlayer();
     this.intervalId = setInterval(getStatus, 2000);
     getStatus();
   }
@@ -53,19 +60,6 @@ class PlayerPage extends Component {
     return this.props.match.params.playerid;
   }
 
-  getPlayer = async () => {
-    const response = await fetch(
-      '/games/' + this.getGameId() + '/players/' + this.getPlayerId()
-    );
-    const player = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(player.message);
-    }
-    this.setState({ player });
-    return player;
-  };
-
   getPlayers = async () => {
     const response = await fetch('/games/' + this.getGameId() + '/players');
     const players = await response.json();
@@ -74,6 +68,7 @@ class PlayerPage extends Component {
       throw Error(players.message);
     }
     this.setState({ players });
+    this.setState({ player: _.find(players, { id: this.getPlayerId() }) });
     return players;
   };
 
@@ -107,7 +102,13 @@ class PlayerPage extends Component {
   }
 
   renderJudgment() {
-    if (!this.state.judgment) {
+    if (
+      !this.state.player ||
+      (this.state.player.state !== 'waiting-for-judgment' &&
+        this.state.player.state !== 'waiting-for-reveals' &&
+        this.state.player.state !== 'revealing') ||
+      !this.state.judgment
+    ) {
       return null;
     }
 
@@ -115,12 +116,8 @@ class PlayerPage extends Component {
       this.revealJudgment(this.state.judgment);
     };
 
-    const onDoneClick = () => {
-      this.clearSubmissions().then(this.getPlayer);
-    };
-
-    let revealButton = () => {
-      if (this.state.player.role !== 'judge') {
+    let getButton = () => {
+      if (this.state.player.state !== 'revealing') {
         return null;
       }
       const doneRevealing =
@@ -129,7 +126,7 @@ class PlayerPage extends Component {
         <Button
           variant="contained"
           color="primary"
-          onClick={doneRevealing ? onDoneClick : onRevealClick}
+          onClick={doneRevealing ? this.clearSubmissions : onRevealClick}
         >
           {doneRevealing ? 'Done' : 'Reveal'}
         </Button>
@@ -144,7 +141,7 @@ class PlayerPage extends Component {
           gameId={this.getGameId()}
           onCardClick={this.onCardClick.bind(this)}
         />
-        {revealButton()}
+        {getButton()}
       </div>
     );
   }
@@ -273,7 +270,7 @@ class PlayerPage extends Component {
         <CardGrid
           cards={this.state.player.cards}
           gameId={this.getGameId()}
-          disabled={this.canSubmitCards()}
+          disabled={this.state.player.state !== 'guessing'}
           onCardClick={this.onCardClick.bind(this)}
         />
       </div>

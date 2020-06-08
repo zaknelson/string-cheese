@@ -2,6 +2,7 @@ const _ = require('lodash');
 const CONFIG = require('../data/config');
 const GameService = require('./GameService');
 const Submission = require('../models/Submission');
+const PlayerState = require('../models/PlayerState');
 
 class SubmissionService {
   deleteSubmissions(gameId) {
@@ -9,10 +10,9 @@ class SubmissionService {
     game.round++;
     game.submissions = [];
 
-    // Re-up player cards, and reset roles
+    // Re-up player cards, and reset states
     _.forEach(game.players, (player) => {
-      player.role = 'guesser';
-      player.isWaiting = false;
+      player.state = PlayerState.GUESSING;
       _.times(CONFIG.handSize - player.cards.length, () => {
         const card = game.drawCard();
         player.cards.push(card);
@@ -21,8 +21,7 @@ class SubmissionService {
 
     // Set the new judge
     const newJudge = game.players[game.round % game.players.length];
-    newJudge.role = 'judge';
-    newJudge.isWaiting = true;
+    newJudge.state = PlayerState.WAITING_FOR_GUESSES;
 
     return game.submissions;
   }
@@ -37,13 +36,14 @@ class SubmissionService {
     const player = _.find(game.players, { cards: [{ id: cardId }] });
     const card = _.find(player.cards, { id: cardId });
     const submission = new Submission(player, card);
-    player.isWaiting = true;
+    player.state = PlayerState.WAITING_FOR_JUDGMENT;
     player.playCard(card);
     game.submissions.push(submission);
 
     // If this is the last submission, the judge isn't waiting anymore
     if (game.submissions.length === game.players.length - 1) {
-      _.find(game.players, { role: 'judge' }).isWaiting = false;
+      _.find(game.players, { state: PlayerState.WAITING_FOR_GUESSES }).state =
+        PlayerState.JUDGING;
     }
 
     return submission;

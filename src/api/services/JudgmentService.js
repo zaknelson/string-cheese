@@ -2,14 +2,21 @@ const _ = require('lodash');
 const CONFIG = require('../data/config');
 const GameService = require('./GameService');
 const Judgment = require('../models/Judgment');
+const PlayerState = require('../models/PlayerState');
 
 class JudgmentService {
   createJudgment(gameId, submissions) {
     const game = GameService.getGame(gameId);
     const judgment = new Judgment();
-    _.map(submissions, (submission) =>
-      judgment.addSubmission(_.find(game.submissions, { id: submission.id }))
-    );
+    const submissionPlayers = [];
+    _.forEach(submissions, (submissionData) => {
+      const submission = _.find(game.submissions, { id: submissionData.id });
+      judgment.submissions.push(submission);
+      submissionPlayers.push(submission.player);
+      submission.player.state = PlayerState.WAITING_FOR_REVEALS;
+    });
+    _.difference(game.players, submissionPlayers)[0].state =
+      PlayerState.REVEALING;
     game.judgments.push(judgment);
     return judgment;
   }

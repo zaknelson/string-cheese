@@ -6,10 +6,6 @@ class Judgment {
     this.submissions = [];
     this.revealed = 0;
   }
-
-  addSubmission(submission) {
-    this.submissions.push(submission);
-  }
 }
 
 module.exports = Judgment;

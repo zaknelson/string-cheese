@@ -21,10 +21,13 @@ class Scoreboard extends Component {
     }
 
     let getIconForPlayer = (player) => {
-      if (player.role === 'judge') {
+      if (
+        player.state === 'judging' ||
+        player.state === 'waiting-for-guesses'
+      ) {
         return <GradeIcon />;
       } else {
-        return player.isWaiting ? <DoneIcon /> : null;
+        return player.state === 'guessing' ? null : <DoneIcon />;
       }
     };
 
