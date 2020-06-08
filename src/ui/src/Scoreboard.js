@@ -21,7 +21,6 @@ class Scoreboard extends Component {
     }
 
     let getIconForPlayer = (player) => {
-      console.log(player.name + " " + player.state);
       if (
         player.state === 'judging' ||
         player.state === 'revealing' ||
