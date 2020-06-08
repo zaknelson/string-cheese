@@ -30,4 +30,5 @@ module.exports = [
   'Scrabble',
   'Candy',
   'Giggling',
+  'Jean jackets',
 ];

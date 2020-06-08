@@ -24,7 +24,10 @@ class PlayerPage extends Component {
           this.state.player.state === 'waiting-for-guesses' ||
           this.state.player.state === 'judging'
         ) {
-          this.getSubmissions();
+          // No need to poll once we have all the submissions
+          if (!this.hasAllSubmissions()) {
+            this.getSubmissions();
+          }
         } else {
           this.setState({
             submissions: null,
@@ -97,6 +100,14 @@ class PlayerPage extends Component {
     return submissions;
   };
 
+  hasAllSubmissions() {
+    return (
+      this.state.submissions &&
+      this.state.players &&
+      this.state.submissions.length === this.state.players.length - 1
+    );
+  }
+
   onCardClick(card) {
     this.submitCard(card).then(this.getPlayer);
   }
@@ -135,7 +146,7 @@ class PlayerPage extends Component {
 
     let cards = this.state.judgment.submissions.map((a) => a.card);
     return (
-      <div>
+      <div className="reveal-view">
         <CardGrid
           cards={cards}
           gameId={this.getGameId()}
@@ -150,7 +161,7 @@ class PlayerPage extends Component {
     if (
       this.state.judgment ||
       !this.state.submissions ||
-      this.state.submissions.length < this.state.players.length - 1 ||
+      !this.hasAllSubmissions() ||
       this.state.submissions.length === 0
     ) {
       return null;
@@ -165,23 +176,23 @@ class PlayerPage extends Component {
       });
     };
 
-    const onChooseClick = () => {
+    const onConfirmClick = () => {
       this.submitJudgment({
         submissions: this.state.submissions,
-      }).then(this.getJudgment);
+      });
     };
 
     let cards = this.state.submissions.map((a) => a.card);
     return (
-      <div>
+      <div className="confirm-view">
         <CardGrid
           cards={cards}
           gameId={this.getGameId()}
           disabled={true}
           onCardOrderChange={onCardOrderChange.bind(this)}
         />
-        <Button variant="contained" color="primary" onClick={onChooseClick}>
-          Choose
+        <Button variant="contained" color="primary" onClick={onConfirmClick}>
+          Confirm Order
         </Button>
       </div>
     );
@@ -234,6 +245,7 @@ class PlayerPage extends Component {
     if (response.status !== 200) {
       throw Error(responseJudgment.message);
     }
+    this.setState({ judgment: responseJudgment });
     return responseJudgment;
   };
 
