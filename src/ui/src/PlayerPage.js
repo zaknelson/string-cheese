@@ -140,6 +140,7 @@ class PlayerPage extends Component {
           cards={cards}
           gameId={this.getGameId()}
           onCardClick={this.onCardClick.bind(this)}
+          revealing={true}
         />
         {getButton()}
       </div>

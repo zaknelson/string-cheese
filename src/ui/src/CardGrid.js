@@ -10,6 +10,11 @@ import './CardGrid.css';
 
 const GRID = 8;
 
+const borderStyles = (justRevealed) => ({
+  borderWidth: justRevealed ? '3px' : '0px',
+  borderColor: "green",
+});
+
 const getListStyle = (isDraggingOver) => ({
   display: 'flex',
   padding: GRID,
@@ -88,7 +93,11 @@ class CardGrid extends Component {
                                   this.props.cards[i]
                                 )}
                               >
-                                <Paper className="paper">
+                                <Paper 
+                                  className="paper"
+                                  variant={this.props.revealing && i === this.props.cards.length - 1 ? "outlined" : "elevation"}
+                                  style={borderStyles(this.props.revealing && i === this.props.cards.length - 1)}
+                                >
                                   <Typography
                                     variant="h6"
                                     component="h6"
