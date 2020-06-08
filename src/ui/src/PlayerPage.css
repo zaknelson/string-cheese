@@ -7,3 +7,16 @@
 .Scoreboard {
   margin-left: auto;
 }
+
+.reveal-view,
+.confirm-view {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.reveal-view div,
+.confirm-view div {
+  padding: 10px;
+}
