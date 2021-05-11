@@ -19,7 +19,7 @@
   "homepage": "https://github.com/zaknelson/string-cheese#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "shortid": "^2.2.15"
   },
   "devDependencies": {
